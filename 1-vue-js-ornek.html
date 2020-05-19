@@ -8,14 +8,18 @@
 <body>
 
     <div id="app">
-        <h1>test</h1>
-        <button>test</button>
+        <h1>{{ title }}</h1>
+        <button>{{ buttonTitle }}</button>
 
     </div>
 
     <script>
         new Vue({
-            el : "#app"
+            el : "#app",
+            data :{
+                title : "test başlık",
+                buttonTitle : "tıkla gelsin..."
+            }
         })
     </script>
 </body>
