@@ -7,12 +7,56 @@
   </head>
   <body>
     <div id="app">
+      <input
+        type="text"
+        @keypress.enter="keyp($event)"
+        placeholder="sayi gir ve enterla..."
+      />
+      <button @click="arttir()">arttır</button>
+      <p>{{ sayi }}</p>
       
+
+      <!-- 
+        v-on kısaltması @
+        v-bind kısaltması :
+        <input
+        type="text"
+        v-on:keypress="keyp($event)"
+        placeholder="sayi gir..."
+      />
+      <button v-on:click="arttir()">arttır</button>
+      <p>{{ sayi }}</p>
+       -->
+
     </div>
 
     <script>
       new Vue({
-        
+        el: "#app",
+        data: {
+          sayi: 0,
+        },
+        methods: {
+          arttir() {
+            this.sayi++;
+          },
+          keyp(gelenE) {
+            // console.log(gelenE);
+            // console.log(gelenE.keyCode);
+            console.log(gelenE.target.value);
+            if (gelenE.keyCode == 13) {
+              // alert(gelenE.target.value)
+            //   this.sayi += parseInt(gelenE.target.value);
+            //   gelenE.target.value = "";
+              /* event modifier diye bir şey var 
+              burada function ile 13 code lu tuşa basıldığında bunu yap diyoruz, yani enter
+              ama event modifier kullanarak template üzerinde buna gerek kalmaz 
+              başka bir sürü event modifier var kullanılabilecek*/
+              this.sayi += parseInt(gelenE.target.value);
+              gelenE.target.value = "";
+            }
+          },
+        },
       });
     </script>
   </body>
