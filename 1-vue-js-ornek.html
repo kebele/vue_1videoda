@@ -13,8 +13,16 @@
       <!-- <a href="{{link}}">videosinif</a> -->
       <!-- attribute içinde {{xxx}} şeklinde kullanılamaz aşağıdaki şekilde
         v-bind:href="link"
-        burada dediğimiz şey href i vue ile kontrol etmek istiyorum, bunu birleştir diyoruz-->
+        burada dediğimiz şey href i vue ile kontrol etmek istiyorum, bunu birleştir diyoruz
+    aşağıdaki gibi v-text="parag2"> şeklinde de text yazdırabiliriz-->
+      <p v-text="parag2"></p>
       <a v-bind:href="link">videosinif</a>
+      <!-- birde olmayan bir attribute tanımlayıp ona bir değer atayalım -->
+      <a v-bind:href="link2" v-bind:data-id="dataId">cnn</a>
+      <!-- inspect ten bakarsan data-id olarak tanımladığımız attr e 123 değerinin atandığını görürüz -->
+      <p>{{ details }}</p>
+      <!-- bu şekilde string olarak ekrana basar html şeklinde değil html şeklinde göstermek için -->
+      <p v-html="details"></p>
     </div>
 
     <script>
@@ -24,8 +32,15 @@
           title: "test başlık",
           buttonTitle: "tıkla gelsin...",
           parag: "lorem ipsum dolor sit amet...",
+          parag2: "Ut enim ad minim veniam",
           link: "https://www.videosinif.com",
+          link2: "https://edition.cnn.com/",
+          dataId: "123",
+          details: "<b>bu bir haber detayıdır...</b>",
         },
+        
+
+
       });
     </script>
   </body>
