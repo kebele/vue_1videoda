@@ -1,0 +1,87 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>vue-4 computed-reactive properties</title>
+  </head>
+  <body>
+    <div id="app">
+      <input type="text" v-model="age" />
+      <p>javascript : {{ age >= 18 ? "RESİT" : "KUCUK" }}</p>
+      <p>method : {{ ageWriter() }}</p>
+      <p>computed : {{ ageWriterComp }}</p>
+      <hr />
+      <p>{{ sayi }}</p>
+      <button @click="sayi++">sayiyi arttır</button>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          age: 0,
+          sayi: 0,
+        },
+        methods: {
+          ageWriter() {
+            // console.log(v)
+            // return v
+            console.log("method_calisti");
+            return this.age >= 18 ? "RESİT" : "KUCUK";
+          },
+        },
+        computed: {
+            ageWriterComp(){
+                console.log("computed calisti")
+                return this.age>= 18 ? "18'den BUYUK" : "18'den KUCUK";
+            }
+        },
+        watch : {
+          age(newValue, oldValue){
+            console.log("new : " + newValue);
+            console.log("old : " + oldValue);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 
+        computed properties
+        bir değişkenin değeri değiştiğinde otomatik başka değişiklikler istiyorsak ...
+        mesela biz buraya yaş girdiğimizde bu yaş 18 den buyukse/kuçukse ona göre sonuç döndürsün,
+        bunun bir kaç yolu var;
+        1- template içinde {{ age >= 18 ? "BUYUK" : "KUCUK" }} yazmak, ancak burada bir kısıtımız var, buraya yazacağımız kod tek satır olmalı
+        2- methods lara function eklemek
+        methods: {
+            ageWriter(){
+                // console.log(v)
+                // return v
+                console.log("method_calisti")
+                return this.age >= 18 ? "RESİT" : "KUCUK"
+            }
+        }, 
+        bu yöntemde de sıkıntı yok,
+
+        bir diğer durum şimdi ageWriter'a console mesajı yazdırdık, method çalıştı diye, alt tarafa bu sefer üst taraf ile ilgisi olmayan bir bir sayı arttırma işlemi ekledik, her sayı artışında methods daki ageWriter da çalışıyor ama yaptığımız iş ile hiç ilgisi yok. 
+
+        VueJS eğer instance üzerinde bir değişiklik varsa template üzerinde bir değişiklik olarak görür ve bütün template i tekrar oluşturur. Bundan kaçmak için ya template leri böleceğiz, bölemeyeceğimiz durumlar olabilir buda büyük template lerde ciddi problem ortaya çıkarır.
+
+        Bunu computed ile çözeriz. 
+        computed kendi kendine bir şeyleri tetikler, duruma göre davranır, buda normal bir function olarak tanımlanır, bir fark yok ancak bunu biz tetiklemeyiz, template e yazdığımız kodda () li yazmadığımıza dikkat
+        <p>{{ ageWriterComp }}</p>
+
+        method template deki herhangibir veri değiştiği anda tekrar çalışır, 
+        computed ise kendi içerisinde hangi vue instance verisi kullanılmış ona bakar eğer o veride değişiklik yoksa çalışmaz
+
+        reactive properties
+        watch : herhangibir veriyi anlık olarak izlememizi sağlar, 
+        
+        
+        
+
+
+        
+    -->

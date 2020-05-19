@@ -1,0 +1,48 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>vue-5-class-dynamic-style</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #666;
+            background-color: #fbbd08;
+            margin-bottom: 10px;;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div class="box" :class="className"></div>
+      <div class="box" :class="{'blue' : !showBlue}"></div>
+      <!-- eğer showBlue = false ise blue ekle -->
+      <button @click="showBlue = !showBlue">ekle/kaldır</button>
+      <!-- showBlue değerini ters,ne çevir  -->
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+           className : "blue",
+           showBlue : false, 
+        },
+
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 
+    bazı durumlarda style ı vue ile değiştirmemiz gerekebilir, mesela bir yer 0 dır bunu kırmızı yapmak isteriz vb.
+    iki tane class atrr olması problem değil, birini bind liyoruz
+
+-->
