@@ -1,0 +1,38 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>vue-3 two way data binding</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <input type="text" :value="sayi" /> -->
+      <input type="text" 
+        v-model="sayi" />
+      <!-- yapmak istediğimiz şey, inputa girdiğimiz eğerin aşağıya yazması, aynı şekilde sayi da yazanda inputta yazsın 
+        two way data binding, iki yönlü data atama
+        yani template değiştiğinde instance değişsin, instance değiştiğinde de template değişsin
+        v-model="sayi"
+        sayi property si ile template i bağla
+
+-->
+      <p>{{ sayi }}</p>
+      <button @click="arttir">arttır</button>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          sayi: 1402,
+        },
+        methods: {
+            arttir(){
+                this.sayi++;
+            }
+        },
+      });
+    </script>
+  </body>
+</html>
