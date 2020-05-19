@@ -22,7 +22,8 @@
   <body>
     <div id="app">
       <div class="box" :class="className"></div>
-      <div class="box" :class="{'blue' : !showBlue}"></div>
+      <!-- <div class="box" :class="{'blue' : !showBlue}"></div> -->
+      <div class="box" :class="className"></div>
       <!-- eğer showBlue = false ise blue ekle -->
       <button @click="showBlue = !showBlue">ekle/kaldır</button>
       <!-- showBlue değerini ters,ne çevir  -->
@@ -32,9 +33,18 @@
       new Vue({
         el: "#app",
         data: {
-           className : "blue",
+        //    className : "blue",
            showBlue : false, 
         },
+        computed : {
+            //bir veriye göre otomatik olarak sonuç üretiyor
+            //className geriye bir object döndürsün
+            className(){
+                return {
+                    'blue' : this.showBlue,
+                }
+            }
+        }
 
       });
     </script>
