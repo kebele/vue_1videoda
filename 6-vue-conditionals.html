@@ -1,0 +1,36 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>vue-6-conditionals</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+        <button @click="showBox=!showBox">göster/gizle</button>
+      <p v-if="showBox">sayfa açıldığında gösterilecek...</p>
+      <!-- <p v-else-if="!showBox">buton ile görünecek...</p> -->
+      <p v-else>else halinde görünecek...</p>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data : {
+            showBox : false
+        }
+
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 
+    conditionals
+    <p v-if="showBox"> showBox true ise görünecek
+    <p v-else-if="!showBox"> false olduğunda
+    <p ve-else> aksi halde gözükecek
+
+
+-->

@@ -10,13 +10,12 @@
             height: 200px;
             border: 1px solid #666;
             background-color: #fbbd08;
-            margin-bottom: 10px;;
+            margin-bottom: 10px;
         }
 
         .blue {
             background-color: blue;
         }
-
     </style>
   </head>
   <body>
@@ -25,6 +24,7 @@
       <!-- <div class="box" :class="{'blue' : !showBlue}"></div> -->
       <div class="box" :class="className"></div>
       <!-- eğer showBlue = false ise blue ekle -->
+      <div class="box" :style="{'background-color' :'black'}"></div>
       <button @click="showBlue = !showBlue">ekle/kaldır</button>
       <!-- showBlue değerini ters,ne çevir  -->
     </div>
@@ -32,8 +32,8 @@
     <script>
       new Vue({
         el: "#app",
-        data: {
-        //    className : "blue",
+        data : {
+        // className : "blue",
            showBlue : false, 
         },
         computed : {
@@ -52,7 +52,12 @@
 </html>
 
 <!-- 
-    bazı durumlarda style ı vue ile değiştirmemiz gerekebilir, mesela bir yer 0 dır bunu kırmızı yapmak isteriz vb.
-    iki tane class atrr olması problem değil, birini bind liyoruz
+    bazı durumlarda style ı vuejs ile (instance) değiştirmemiz gerekebilir, mesela bir yer 0 dır bunu kırmızı yapmak isteriz vb.
+    iki tane class atrr olması problem değil, birini bind liyoruz,
+    yukarıda yoruma aldığım style şartını computed a aldım. 
+    computed class larda aktif şekilde kullanılır
+    ayrıca 
+    inline style da yapabiliriz
+
 
 -->

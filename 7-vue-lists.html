@@ -1,0 +1,39 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>vue-7-listeler</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+        <ul>
+            <li v-for="item in list">{{ item }}</li>
+            <hr>
+            <li v-for="item in list" v-text="item"></li>
+        </ul>
+    </div>
+
+    <script>
+      new Vue({
+        el: "#app",
+        data : {
+            list : ["elma", "armut", "kiraz"]
+        }
+
+      });
+    </script>
+  </body>
+</html>
+
+<!-- 
+    listeler
+    mesela data içinde bir [xyz] olsaydı bunları emplate de nasıl gösterecektik?
+    v-for directive i kullanacağız
+    hangi elementten çoğaltmak istiyorsak onun içine 
+    <li v-for="i in list">{{ i }}</li>
+
+
+
+-->
