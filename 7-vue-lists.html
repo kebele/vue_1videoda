@@ -4,24 +4,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>vue-7-listeler</title>
-    <style></style>
+    <style>
+      ul {
+        margin: 0;
+        padding: 0;
+        margin-top: 10px;
+        list-style-type: none;
+        width: 200px;
+      }
+
+      li {
+        padding: 5px 5px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid #ccc;
+        text-align: left;
+      }
+      .red {
+        background-color: coral;
+      }
+
+      .green {
+          background-color:limegreen;
+      }
+    </style>
   </head>
   <body>
     <div id="app">
-        <ul>
-            <li v-for="item in list">{{ item }}</li>
-            <hr>
-            <li v-for="item in list" v-text="item"></li>
-        </ul>
+      <ul>
+        <li v-for="item in list">{{ item }}</li>
+        <hr />
+        <li v-for="item in list" v-text="item"></li>
+        <hr />
+        <!-- sayı sıralamak istersek -->
+        <li v-for="sayi in 10">{{ sayi }}</li>
+      </ul>
+      <hr />
+      <div v-for="item in personel">
+        {{item}}
+      </div>
+      <hr />
+      <div v-for="(value, key) in personel">
+        {{ key + " : " + value }}
+      </div>
+      <hr />
+      <div v-for="(value, key) in personel">
+        <strong>{{key}} : </strong>{{ value }}
+      </div>
+      <hr />
+      <ul>
+        <li v-for="product in productList">
+          {{ product.title }} - {{ product.count }}
+        </li>
+        <!-- object i string olarak buraya bastı -->
+      </ul>
+      <hr />
+      <ul>
+        <li v-for="product in productList" v-if="product.count > 0">
+          <span>{{ product.title }} - {{ product.count }}</span>
+          <button @click="product.count--">satıldı</button>
+        </li>
+        <!-- count u 0 dan büyük olanları listeler -->
+      </ul>
+      <hr />
+      satılacak adet : <input type="text" v-model="sellCount" />
+      <ul>
+        <li v-for="product in productList" v-if="product.count > 0">
+          <span>{{ product.title }} - {{ product.count }}</span>
+          <button @click="product.count-=sellCount">satıldı</button>
+        </li>
+      </ul>
+      <hr />
+      <p>diğer yöntem</p>
+      satılacak adet : <input type="text" v-model="sellCount" />
+      <ul>
+        <li v-for="product in productList" v-if="product.count > 0">
+          <span>{{ product.title }} - {{ product.count }}</span>
+          <button @click="sellProduct(product)">satıldı</button>
+        </li>
+      </ul>
+      <hr />
+      <p>count 0 olduğunda satıldı butonu pasif olsun,</p>
+      <!-- bunu yapan attr disabled bunu şarta bağlayacağız
+    ayrıca stokta varsa yeşil yoksa kırmızı olsun
+    -->
+      satılacak adet : <input type="text" v-model="sellCount" />
+      <ul>
+        <li v-for="product in productList" :class="{'green' : product.count >0, 'red' : product.count <=0}">
+          <span>{{ product.title }} - {{ product.count }}</span>
+          <button :disabled="product.count == 0" @click="sellProduct(product)">
+            satıldı
+          </button>
+        </li>
+      </ul>
+      <hr>
+      <p>count 0 olduğunda satıldı butonu pasif olsun, computed ile</p>
+      <!-- bunu yapan attr disabled bunu şarta bağlayacağız
+    ayrıca stokta varsa yeşil yoksa kırmızı olsun
+    bunu computed ile yapmaya çalışalım
+    burada class daki şartı computed a yollayıp computed functionunu da (backgroundByCount()) :class="backgrundByCount(product)" dersek
+    ÇALIŞMAZ, bunun sebebi computed lar kendi knedine çalışır, biz template içinden paametre yollayarak kendi isteğimize göre çalıştıramazyız, o zaman burada computed kullanamayız, bu durumda computed ile değil normal methods ile yapmalıyız
+
+    -->
+      satılacak adet : <input type="text" v-model="sellCount" />
+      <ul>
+        <li v-for="product in productList" :class="backgroundByCount(product)">
+          <span>{{ product.title }} - {{ product.count }}</span>
+          <button :disabled="product.count == 0" @click="sellProduct(product)">
+            satıldı
+          </button>
+        </li>
+        <p v-if="sellWarning" style="color: red; font-weight : bold">girdiğiniz miktar stoktaki adetten fazladır, stoktakinden fazla satamazsınız!</p>
+      </ul>
     </div>
+    <hr />
 
     <script>
       new Vue({
         el: "#app",
-        data : {
-            list : ["elma", "armut", "kiraz"]
-        }
-
+        data: {
+          sellCount: 0,
+          sellWarning : false,
+          list: ["elma", "armut", "kiraz"],
+          personel: {
+            name: "sergio",
+            lastname: "ramos",
+            email: "sergio@gmail.com",
+          },
+          productList: [
+            {
+              title: "macbook pro",
+              price: 100,
+              count: 0,
+            },
+            {
+              title: "iphone",
+              price: 50,
+              count: 100,
+            },
+            {
+              title: "klavye",
+              price: 10,
+              count: 1000,
+            },
+          ],
+        },
+        methods: {
+          sellProduct(product) {
+              //satmak için girdiğimiz miktar stoktakinden fazla ise uyarı çıksın
+              if(this.sellCount > product.count){
+                this.sellWarning = true
+              }else {
+                product.count = product.count - this.sellCount;
+                this.sellWarning = false
+              }            
+          },
+          backgroundByCount(product){
+                return {'green' : product.count >0, 'red' : product.count <=0}
+            }
+        },
+        computed: {
+            // backgroundbyCount(){
+            //     return {'green' : product.count >0, 'red' : product.count <=0}
+            // }
+        },
       });
     </script>
   </body>
@@ -32,7 +177,7 @@
     mesela data içinde bir [xyz] olsaydı bunları emplate de nasıl gösterecektik?
     v-for directive i kullanacağız
     hangi elementten çoğaltmak istiyorsak onun içine 
-    <li v-for="i in list">{{ i }}</li>
+    <li v-for="item in list">{{ item }}</li>
 
 
 
