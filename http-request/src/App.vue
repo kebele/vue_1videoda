@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2 text-center">
+        <h3 class="mt-5">todo list | vue.js</h3>
+        <hr>
+        <div class="row">
+          <div class="col-md-6 offset-md-3 d-flex flex-row justify-content-between align-items-center">
+            <input type="text">
+            <button class="btn btn-primary">ekle</button>
+          </div>
+        </div>
+        <hr>
+        <div class="todo-container">
+          <Todo />
+        </div>
+      </div>
+
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+  import Todo from "@/components/Todo"
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components : {
+    Todo
+  },
+  data(){
+    return {
+
+    }
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
