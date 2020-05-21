@@ -37,14 +37,57 @@ yani title için {{prosut.title}}
 
 bu yöntem parettan child a veri iletimi yöntemi
 
-şimdi alta bir buton koyalım
+şimdi alta bir buton koyalım, sepete ekle, sol tarafta bir liste olsun sepete ekle dedikçe bu sepete eklensin, sepeti yptık,
+şimdi data içine cartItems : [] tanımlayalım ve dummy olarak bir bakalım sıralamasına, sepeti sıralatma tamam,
+
+şimdi burada sepetteki item lar app.vue da, sepet butonu ise Product.vue da bunu nasıl yapacağız? Yani şimdi child dan parent a aktarım lazım, bunun için butona bir method aktaracağız, methodu da Product.vue da tanımlayacağız; butona atama @click="addToCart(product"
+
+methods : {
+addToCart(){
+          this.$emit("addToCart", product)
+      }
+}
+
+burada $emit("addToCart", product)
+$emit yaymak demek, yani bu methodu addToCart key i ile (başka bir isimde verebiliriz) product bilgisini yay diyoruz (yayınla gibi) bu yayınlan methoduda şimdi App.vue da yakalayacağız 
+
+şimdi App.vue da bu yayınlanı burada kullandığımız Product componenti içinde yakalayacağız, bu bir custom event olduğundan 
+@addToCart ile yakalayacağız
+
+@addToCart="cartItems.push($event)"
+$event özeldir, $emit gibi
+bunun sonucunda object halinde cartItems içine push lar,
+sıkıntı yok, şimdi cartItems : [] daki dummyleri silelim,
+şimdi artık bu objectten istediğimiz kısımları çekebiliriz
+{{item.title}} gibi
+sepet boşken bir yazı çıksın
+bu da tamam
+
+şimdi normalde App.vue içinde bu kadar kod yazılmaz, burada genelde componentler olur, cart ayrı bir component, product ayrı bir componet olur gibi
+
+bir diğer konu şu anda veriyi parent child arasında gezdirdik, child child arasında transfer ise child -- parent -- child şeklinde yapılmalı (eğer bu şekilde yapacaksak) sıkıntılı yani, bu yüzden orta ölçekli projelerde event bus yöntemi ile yapılır, daha büyük projelerde vuez ile yapılır, bu eğitimin konusu değil şu anda
+
+şimdi yeni bir proje açalım, orada da axios ile bir db ye bağlanıp oradan veri çekeceğiz CRUD yapacağız
+
+
+
+
 
 
  -->
   <div class="container">
     <!-- <myComp/>   -->
+    <!-- sepet kısmı -->
+    <div class="cart">
+      <h3>sepet</h3>
+      <ul>
+        <li v-for="item in cartItems" :key="item.id">{{item.title}}</li>
+      </ul>
+      <p v-if="cartItems.length == 0">sepetiniz boş</p>
+    </div>
     <!-- <Product v-for="index in 5" :key="index" /> -->
     <Product
+    @addToCart="cartItems.push($event)"
       :product="product" 
       v-for="product in productList" 
       :key="product.id" />
@@ -88,6 +131,7 @@ export default {
           description : "açıklama 3"
         },
       ],
+        cartItems : [],
     };
   },
 };
@@ -100,5 +144,8 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+.cart{
+  margin-bottom: 50px;
 }
 </style>
