@@ -24,7 +24,76 @@
     }
 
     burada yaptığımız şey, url yi firebase in bize verdiği url;
-    firebase açıklayalım; firebase hizmetine gidiyoruz google un yeni bir proje açıp orada database seçiyoruz, (test olarak kullanacağzı dedik, yoksa authentication ister, istemesin diye), o databes bize bir url verdi, onu alıp axios a grdik, ikinci parametre ise bizim verimizi ne şekilde göndereceğimiz, sonrasi then(response) ne yapacağız, catch() hata olursa ne olacak?
+    firebase açıklayalım; firebase hizmetine gidiyoruz google un yeni bir proje açıp orada database seçiyoruz, (test olarak kullanacağzı dedik, yoksa authentication ister, istemesin diye), o databes bize bir url verdi, onu alıp axios a girdik, ikinci parametre ise bizim verimizi ne şekilde göndereceğimiz, sonrasi then(response) ne yapacağız, catch() hata olursa ne olacak?
 
-12. ayarlamalar snrası ekmek al dedik ve firebase den kontrol ettik, sorun yok, kayıt yapıyor ve console'a response u alıp basıyor
-13. 
+12. ayarlamalar snrası ekmek al dedik ve firebase den kontrol ettik, sorun yok, kayıt yapıyor ve console'a response u alıp basıyor, bizim bunlara erişmemiz lazım
+13. şimdi bu verileri getirmek için simule amaçlı bir buton yapalım
+    <button @click="fetchData">verileri getir</button>
+    ve fetchData methodunu oluşturalım
+    fetchData(){
+      axios.get("https://videoda-vue-b96b8.firebaseio.com/todoList.json")
+        .then(response => {
+          // console.log(response)
+          console.log(response.data)
+          for(let key in response.data){
+            console.log(response.data[key])
+            this.todoList.push(response.data[key])
+          }
+        })
+        .catch()
+    }
+
+    console a bakınca verilerin object olarak geldiğini görürüz ve ayrıca bunları todoList e pushlar ve oradnda diğer methodlar vs ile ekrana gelir ancak gelenler şu anda Todo.vue de olan static veridir
+14. Todo.vue daki static verileri düzeltelim
+  <Todo v-for="todo in todoList" :todo="todo" :key="todo.id" /> şeklinde düzenleyeceğiz, burada özellikle todo atamasına dikkat
+
+15. ayrıca fetchData yı artık oradan çıkarıp created adlı yeni bir functiona atamamız lazım, bu methods lar iinde değil, ayrı bunlara hooks deniyor
+  
+  created() {
+      axios
+        .get("https://videoda-vue-b96b8.firebaseio.com/todoList.json")
+        .then((response) => {
+          // console.log(response)
+          console.log(response.data);
+          for (let key in response.data) {
+            console.log(response.data[key]); 
+            //verileri object olarak aldık
+            let todo = {
+              text : response.data[key].text,
+              id : key
+            }
+            // this.todoList.push(response.data[key]);
+            console.log(todo.text)
+            console.log(todo.id)
+            this.todoList.push(todo);
+          }
+          burada da todo atamasına dikkat
+16. sayfa yüklendiğinde çalışan bir method bu created(){}, artık yapacağımız sil butonuna tıklayınca hem ekrandan hemde firebase veritabanında silinmesi, firebase dokumanında da çok açık olmasa da var, yapacağımız şey key e gidip içine girip sileceğimiz adresi belirleyip sonuna json ekleyip silmek
+
+17. sil Todo.vue içinde butonun içine $emit yapıp App.vue da bu $emit i yakalayacağız, 
+    Todo.vue daki sil butonu
+    <button class="btn btn-danger" @click="$emit('deleteTodo', todo.id)">sil</button>
+    burada dedik ki deleteTodo olarak göndereceğim bunu, bunun değeride todo.id olacak
+
+    App.Vue daki <Todo .../> elementi
+     <Todo @deleteTodo="deleteTodo($event)" v-for="todo in todoList" :todo="todo" :key="todo.id" />
+     App.vue da da <Todo /> içinde diyoruz ki,
+     buraya @deleteTodo gelecek bunu al ve deleteTodo() metodunu çalıştır, bu metodunda parametresi $event olacak yani Todo.vue da yolladığımız değer olan todo.id olacak 
+
+18. Methods içine deleteTodo(){} tanımlayacağız
+    deleteTodo(todoId){
+      // alert(todoId); //problem yok id leri alıyor
+      axios.delete("https://videoda-vue-b96b8.firebaseio.com/todoList/" + todoId + ".json")
+        .then(response => {
+          console.log(response);
+          let index = this.todoList.findIndex( i => {
+            return i.id == todoId
+          })
+          console.log(index)
+          this.todoList.splice(index,1);
+        })
+        .catch(e => {
+          console.log(e)
+        })
+      } 
+
